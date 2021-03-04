@@ -28,7 +28,6 @@ def convert_to_L():
 
 
 def getDet(A):
-    print(A)
     return np.prod([A[i][i] for i in range(len(A))])**2
 
 
@@ -69,9 +68,17 @@ def validate_inv(A_chol, A_bibl):
     return np.linalg.norm(A_chol - A_bibl)
 
 
-def validate_lu(A):
-    A_init = np.array(A)
-    return lu(A_init)
+def lu_cpy(A):
+    n = A.shape[0]
+    U = A.copy()
+    L = np.eye(n, dtype=np.double)
+
+    for i in range(n):
+        factor = U[i+1:, i] / U[i, i]
+        L[i+1:, i] = factor
+        U[i+1:] -= factor[:, np.newaxis] * U[i]
+
+    return L, U
 
 
 def compute_inverse(A):
@@ -168,9 +175,36 @@ if __name__ == '__main__':
         diag = [A[i][i] for i in range(len(A))]
 
         if convert_to_L():
+
+            print("Determinant:")
+            print(getDet(A))
+
+            print(" ")
+
+            print("Solutia X pentru sistemul A * X = B, unde A = L * L.T este:")
+            print(getX(A, getY(A, b)))
+
+            print(" ")
+
             print("Eroare la calcul A_chol * X = B:")
             print(validate_solution(A, getX(A, getY(A, b)), b, diag))
+
             print(" ")
+
+            (L, U) = lu_cpy(np.array(get_A_init(A, diag)))
+            print("Descompunerea LU:")
+            print("L:")
+            print(L)
+            print("U:")
+            print(U)
+
+            print(" ")
+
+            print("Solutia X pentru sistemul A*X = b, unde A = L * U este:")
+            print(getX(U.T, getY(L, b)))
+
+            print(" ")
+
             print("Eroare la calcul A^(-1)")
             print(validate_inv(compute_inverse(A), np.linalg.inv(np.array(get_A_init(A, diag)))))
         else:
