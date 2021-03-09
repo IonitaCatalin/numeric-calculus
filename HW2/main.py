@@ -14,7 +14,7 @@ def convert_to_L():
     global A
 
     for p in range(len(A)):
-        if(A[p][p] - sum([A[p][j] ** 2 for j in range(p)]) < 0):
+        if A[p][p] - sum([A[p][j] ** 2 for j in range(p)]) < 0:
             print(A[p][p] - sum([A[p][j] ** 2 for j in range(p)]))
             return False
 
@@ -28,7 +28,7 @@ def convert_to_L():
 
 
 def getDet(A):
-    return np.prod([A[i][i] for i in range(len(A))])**2
+    return np.prod([A[i][i] for i in range(len(A))]) ** 2
 
 
 def getY(A, b):
@@ -49,7 +49,6 @@ def getX(A, y):
 
 
 def validate_solution(A, x, b, diag):
-
     y = [0.0 for i in range(len(A))]
 
     for i in range(len(A)):
@@ -74,9 +73,9 @@ def lu_cpy(A):
     L = np.eye(n, dtype=np.double)
 
     for i in range(n):
-        factor = U[i+1:, i] / U[i, i]
-        L[i+1:, i] = factor
-        U[i+1:] -= factor[:, np.newaxis] * U[i]
+        factor = U[i + 1:, i] / U[i, i]
+        L[i + 1:, i] = factor
+        U[i + 1:] -= factor[:, np.newaxis] * U[i]
 
     return L, U
 
@@ -93,7 +92,7 @@ def compute_inverse(A):
 
 
 def isclose(a, b, rel_tol=1e-05, abs_tol=0.0):
-    return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+    return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
 
 def check_simetry(A):
@@ -170,7 +169,6 @@ if __name__ == '__main__':
         print(f"Introduceti vectorul B: {count} inputs")
         b = [int(input()) for i in range(0, int(count))]
 
-
     if check_simetry(A):
         diag = [A[i][i] for i in range(len(A))]
 
@@ -211,4 +209,3 @@ if __name__ == '__main__':
             print("Matricea nu e pozitiv definita")
     else:
         print("Matricea nu e simetrica")
-
