@@ -26,10 +26,10 @@ def read_tridiagonal_matrix(path):
 
         for i in range(n):
             a.append(float(f.readline()))
-        for i in range(n - q):
-            b.append(float(f.readline()))
         for i in range(n - p):
             c.append(float(f.readline()))
+        for i in range(n - q):
+            b.append(float(f.readline()))
 
     return a, b, c, p, q
 
@@ -57,7 +57,7 @@ def gauss_seidel(path_a, path_f):
     x_gs = [0.0 for i in range(len(f))]
     k = 0
     k_max = 1000
-    eps = pow(10, -a[3])
+    eps = pow(10, -10)
     delta_x = eps
 
     while eps <= delta_x <= pow(10, 8) and k <= k_max:
@@ -67,9 +67,9 @@ def gauss_seidel(path_a, path_f):
             sum_2 = 0
             temp = x_gs[i]
             if i > a[4] - 1:
-                sum_1 = a[2][i-a[4]]*x_gs[i]
+                sum_1 = a[2][i-a[4]]*x_gs[i-a[4]]
             if i < len(f) - a[3]:
-                sum_2 = a[1][i + a[3] - 1]*x_gs[i]
+                sum_2 = a[1][i + a[3] - 1]*x_gs[i + a[3]]
 
             x_gs[i] = (f[i] - sum_1 - sum_2)/a[0][i]
 
@@ -77,6 +77,10 @@ def gauss_seidel(path_a, path_f):
 
         k += 1
         delta_x = sqrt(delta_x)
+
+    print(k)
+    for val in x_gs:
+        print(val)
 
     return precision(a, x_gs, f)
 
@@ -106,4 +110,17 @@ def print_solution_into_file(path, solution):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    print("______________Max error A1___________________")
     print(gauss_seidel("a_1.txt", "f_1.txt"))
+    #
+    # print("______________Max error A2___________________")
+    # print(gauss_seidel("a_2.txt", "f_2.txt"))
+
+    # print("______________Max error A3___________________")
+    # print(gauss_seidel("a_3.txt", "f_3.txt"))
+
+    # print("______________Max error A4___________________")
+    # print(gauss_seidel("a_4.txt", "f_4.txt"))
+
+    # print("______________Max error A5___________________")
+    # print(gauss_seidel("a_5.txt", "f_5.txt"))
